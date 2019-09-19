@@ -2,6 +2,8 @@
 
 var userDialog = document.querySelector('.setup');
 userDialog.classList.remove('hidden');
+var similarWizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
+var similarListElement = userDialog.querySelector('.setup-similar-list');
 
 var FIRST_NAMES = ['Иван', 'Хуан Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
 var LAST_NAMES = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
@@ -9,23 +11,23 @@ var COAT_COLORS = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161
 var EYES_COLORS = ['black', 'red', 'blue', 'yellow', 'green'];
 var WIZARDS_AMOUNT = 4;
 
+var getRandomFromArray = function (arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+};
+
 var getRandomWizards = function (amount) {
   var wizardsRandom = [];
 
   for (var i = 0; i < amount; i++) {
     var wizardRandom = {};
-    wizardRandom.name = FIRST_NAMES[Math.floor(Math.random() * FIRST_NAMES.length)] + ' ' + LAST_NAMES[Math.floor(Math.random() * LAST_NAMES.length)];
-    wizardRandom.coatColor = COAT_COLORS[Math.floor(Math.random() * COAT_COLORS.length)];
-    wizardRandom.eyesColor = EYES_COLORS[Math.floor(Math.random() * EYES_COLORS.length)];
+    wizardRandom.name = getRandomFromArray(FIRST_NAMES) + ' ' + getRandomFromArray(LAST_NAMES);
+    wizardRandom.coatColor = getRandomFromArray(COAT_COLORS);
+    wizardRandom.eyesColor = getRandomFromArray(EYES_COLORS);
     wizardsRandom.push(wizardRandom);
   }
 
   return wizardsRandom;
 };
-
-var wizards = getRandomWizards(WIZARDS_AMOUNT);
-
-var similarWizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
 
 var renderWizard = function (wizard) {
   var wizardElement = similarWizardTemplate.cloneNode(true);
@@ -37,8 +39,6 @@ var renderWizard = function (wizard) {
   return wizardElement;
 };
 
-var similarListElement = userDialog.querySelector('.setup-similar-list');
-
 var fillWizards = function (wizardsData) {
   var fragment = document.createDocumentFragment();
   for (var i = 0; i < wizardsData.length; i++) {
@@ -47,6 +47,7 @@ var fillWizards = function (wizardsData) {
   similarListElement.appendChild(fragment);
 };
 
+var wizards = getRandomWizards(WIZARDS_AMOUNT);
 fillWizards(wizards);
 
 userDialog.querySelector('.setup-similar').classList.remove('hidden');
