@@ -128,21 +128,21 @@ userNameInput.addEventListener('keydown', function (evt) {
 setupPlayerCoat.addEventListener('click', function () {
   counter.coatColor = counterChange(counter.coatColor, COAT_COLORS.length);
 
-  setupPlayerCoat.setAttribute('style', 'fill: ' + COAT_COLORS[counter.coatColor] + ';');
+  setupPlayerCoat.style.fill = COAT_COLORS[counter.coatColor];
   setup.querySelector('input[name="coat-color"]').value = COAT_COLORS[counter.coatColor];
 });
 
 setupPlayerEyes.addEventListener('click', function () {
   counter.eyesColor = counterChange(counter.eyesColor, EYES_COLORS.length);
 
-  setupPlayerEyes.setAttribute('style', 'fill: ' + EYES_COLORS[counter.eyesColor] + ';');
+  setupPlayerEyes.style.fill = EYES_COLORS[counter.eyesColor];
   setup.querySelector('input[name="eyes-color"]').value = EYES_COLORS[counter.eyesColor];
 });
 
 setupFireballWrap.addEventListener('click', function () {
   counter.fireballColor = counterChange(counter.fireballColor, FIREBALL_COLORS.length);
 
-  setupFireballWrap.setAttribute('style', 'background-color: ' + FIREBALL_COLORS[counter.fireballColor] + ';');
+  setupFireballWrap.style.backgroundColor = FIREBALL_COLORS[counter.fireballColor];
   setup.querySelector('input[name="fireball-color"]').value = FIREBALL_COLORS[counter.fireballColor];
 });
 
