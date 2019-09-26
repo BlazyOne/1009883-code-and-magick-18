@@ -19,9 +19,11 @@ var setupFireballWrap = setup.querySelector('.setup-fireball-wrap');
 var similarWizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
 var similarListElement = setup.querySelector('.setup-similar-list');
 
-var coatColorCounter = 0;
-var eyesColorCounter = 0;
-var fireballColorCounter = 0;
+var counter = {
+  coatColor: 0,
+  eyesColor: 0,
+  fireballColor: 0
+};
 
 var onSetupEscPress = function (evt) {
   if (evt.keyCode === ESC_KEYCODE) {
@@ -37,6 +39,16 @@ var openSetup = function () {
 var closeSetup = function () {
   setup.classList.add('hidden');
   document.removeEventListener('keydown', onSetupEscPress);
+};
+
+var counterChange = function (count, maxCount) {
+  if (count < maxCount - 1) {
+    count++;
+  } else {
+    count = 0;
+  }
+
+  return count;
 };
 
 var getRandomFromArray = function (arr) {
@@ -95,7 +107,7 @@ setupClose.addEventListener('keydown', function (evt) {
   }
 });
 
-userNameInput.addEventListener('invalid', function () {
+userNameInput.addEventListener('input', function () {
   if (userNameInput.validity.tooShort) {
     userNameInput.setCustomValidity('Имя должно состоять минимум из 2-х символов');
   } else if (userNameInput.validity.tooLong) {
@@ -114,36 +126,24 @@ userNameInput.addEventListener('keydown', function (evt) {
 });
 
 setupPlayerCoat.addEventListener('click', function () {
-  if (coatColorCounter < COAT_COLORS.length - 1) {
-    coatColorCounter++;
-  } else {
-    coatColorCounter = 0;
-  }
+  counter.coatColor = counterChange(counter.coatColor, COAT_COLORS.length);
 
-  setupPlayerCoat.setAttribute('style', 'fill: ' + COAT_COLORS[coatColorCounter] + ';');
-  setup.querySelector('input[name="coat-color"]').value = COAT_COLORS[coatColorCounter];
+  setupPlayerCoat.setAttribute('style', 'fill: ' + COAT_COLORS[counter.coatColor] + ';');
+  setup.querySelector('input[name="coat-color"]').value = COAT_COLORS[counter.coatColor];
 });
 
 setupPlayerEyes.addEventListener('click', function () {
-  if (eyesColorCounter < EYES_COLORS.length - 1) {
-    eyesColorCounter++;
-  } else {
-    eyesColorCounter = 0;
-  }
+  counter.eyesColor = counterChange(counter.eyesColor, EYES_COLORS.length);
 
-  setupPlayerEyes.setAttribute('style', 'fill: ' + EYES_COLORS[eyesColorCounter] + ';');
-  setup.querySelector('input[name="eyes-color"]').value = EYES_COLORS[eyesColorCounter];
+  setupPlayerEyes.setAttribute('style', 'fill: ' + EYES_COLORS[counter.eyesColor] + ';');
+  setup.querySelector('input[name="eyes-color"]').value = EYES_COLORS[counter.eyesColor];
 });
 
 setupFireballWrap.addEventListener('click', function () {
-  if (fireballColorCounter < FIREBALL_COLORS.length - 1) {
-    fireballColorCounter++;
-  } else {
-    fireballColorCounter = 0;
-  }
+  counter.fireballColor = counterChange(counter.fireballColor, FIREBALL_COLORS.length);
 
-  setupFireballWrap.setAttribute('style', 'background-color: ' + FIREBALL_COLORS[fireballColorCounter] + ';');
-  setup.querySelector('input[name="fireball-color"]').value = FIREBALL_COLORS[fireballColorCounter];
+  setupFireballWrap.setAttribute('style', 'background-color: ' + FIREBALL_COLORS[counter.fireballColor] + ';');
+  setup.querySelector('input[name="fireball-color"]').value = FIREBALL_COLORS[counter.fireballColor];
 });
 
 var wizards = getRandomWizards(WIZARDS_AMOUNT);
