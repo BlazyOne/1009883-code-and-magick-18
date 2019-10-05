@@ -7,6 +7,7 @@
     y: '80px'
   };
   var SAVE_WIZARD_URL = 'https://js.dump.academy/code-and-magick';
+  var SAVE_WIZARD_LOAD_TYPE = 'POST';
 
   var setup = document.querySelector('.setup');
   var setupOpen = document.querySelector('.setup-open');
@@ -152,9 +153,9 @@
   });
 
   wizardForm.addEventListener('submit', function (evt) {
-    window.backend.save(SAVE_WIZARD_URL, new FormData(wizardForm), function () {
+    window.backend.load(SAVE_WIZARD_URL, SAVE_WIZARD_LOAD_TYPE, function () {
       closeSetup();
-    }, onWizardSaveError);
+    }, onWizardSaveError, new FormData(wizardForm));
     evt.preventDefault();
   });
 })();

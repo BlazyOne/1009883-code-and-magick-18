@@ -8,6 +8,7 @@
   var WIZARDS_AMOUNT = 4;
 
   var WIZARDS_DATA_URL = 'https://js.dump.academy/code-and-magick/data';
+  var WIZARDS_DOWNLOAD_TYPE = 'GET';
 
   var similarWizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
   var similarListElement = document.querySelector('.setup .setup-similar-list');
@@ -68,5 +69,5 @@
   // wizardsLoader.src = 'https://js.dump.academy/code-and-magick/data?callback=window.setup.fillWizards';
   // document.body.append(wizardsLoader);
 
-  window.backend.load(WIZARDS_DATA_URL, onWizardsDownloadSuccess, onWizardsDownloadError);
+  window.backend.load(WIZARDS_DATA_URL, WIZARDS_DOWNLOAD_TYPE, onWizardsDownloadSuccess, onWizardsDownloadError);
 })();
