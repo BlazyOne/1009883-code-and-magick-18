@@ -6,10 +6,12 @@
     x: '50%',
     y: '80px'
   };
+  var SAVE_WIZARD_URL = 'https://js.dump.academy/code-and-magick';
 
   var setup = document.querySelector('.setup');
   var setupOpen = document.querySelector('.setup-open');
   var setupClose = setup.querySelector('.setup-close');
+  var wizardForm = setup.querySelector('.setup-wizard-form');
   var userNameInput = setup.querySelector('.setup-user-name');
   var setupPlayerCoat = setup.querySelector('.setup-wizard .wizard-coat');
   var setupPlayerEyes = setup.querySelector('.setup-wizard .wizard-eyes');
@@ -41,6 +43,12 @@
     setup.classList.add('hidden');
     setupPositionReset();
     document.removeEventListener('keydown', onSetupEscPress);
+  };
+
+  var onWizardSaveError = function (errorMessage) {
+    var errorElement = window.util.createLoadErrorElement();
+
+    errorElement.textContent = 'Сохранение персонажа. ' + errorMessage;
   };
 
   setupOpen.addEventListener('click', function () {
@@ -141,5 +149,12 @@
 
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
+  });
+
+  wizardForm.addEventListener('submit', function (evt) {
+    window.backend.save(SAVE_WIZARD_URL, new FormData(wizardForm), function () {
+      closeSetup();
+    }, onWizardSaveError);
+    evt.preventDefault();
   });
 })();

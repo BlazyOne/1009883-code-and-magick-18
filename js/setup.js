@@ -7,6 +7,8 @@
   var EYES_COLORS = ['black', 'red', 'blue', 'yellow', 'green'];
   var WIZARDS_AMOUNT = 4;
 
+  var WIZARDS_DATA_URL = 'https://js.dump.academy/code-and-magick/data';
+
   var similarWizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
   var similarListElement = document.querySelector('.setup .setup-similar-list');
 
@@ -16,8 +18,8 @@
     for (var i = 0; i < amount; i++) {
       var wizardRandom = {};
       wizardRandom.name = window.util.getRandomFromArray(FIRST_NAMES) + ' ' + window.util.getRandomFromArray(LAST_NAMES);
-      wizardRandom.coatColor = window.util.getRandomFromArray(COAT_COLORS);
-      wizardRandom.eyesColor = window.util.getRandomFromArray(EYES_COLORS);
+      wizardRandom.colorCoat = window.util.getRandomFromArray(COAT_COLORS);
+      wizardRandom.colorEyes = window.util.getRandomFromArray(EYES_COLORS);
       wizardsRandom.push(wizardRandom);
     }
 
@@ -28,27 +30,43 @@
     var wizardElement = similarWizardTemplate.cloneNode(true);
 
     wizardElement.querySelector('.setup-similar-label').textContent = wizard.name;
-    wizardElement.querySelector('.wizard-coat').style.fill = wizard.coatColor;
-    wizardElement.querySelector('.wizard-eyes').style.fill = wizard.eyesColor;
+    wizardElement.querySelector('.wizard-coat').style.fill = wizard.colorCoat;
+    wizardElement.querySelector('.wizard-eyes').style.fill = wizard.colorEyes;
 
     return wizardElement;
   };
 
   var fillWizards = function (wizardsData) {
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < wizardsData.length; i++) {
+    for (var i = 0; i < WIZARDS_AMOUNT; i++) {
       fragment.appendChild(renderWizard(wizardsData[i]));
     }
     similarListElement.appendChild(fragment);
   };
 
-  window.setup = {
-    COAT_COLORS: COAT_COLORS,
-    EYES_COLORS: EYES_COLORS
+  var onWizardsDownloadSuccess = function (wizards) {
+    fillWizards(wizards);
+    document.querySelector('.setup .setup-similar').classList.remove('hidden');
   };
 
-  var wizards = getRandomWizards(WIZARDS_AMOUNT);
-  fillWizards(wizards);
+  var onWizardsDownloadError = function (errorMessage) {
+    var errorElement = window.util.createLoadErrorElement();
 
-  document.querySelector('.setup .setup-similar').classList.remove('hidden');
+    errorElement.textContent = 'Загрузка похожих персонажей. ' + errorMessage;
+  };
+
+  window.setup = {
+    COAT_COLORS: COAT_COLORS,
+    EYES_COLORS: EYES_COLORS,
+    fillWizards: fillWizards
+  };
+
+  getRandomWizards(WIZARDS_AMOUNT);
+  // var wizards = getRandomWizards(WIZARDS_AMOUNT);
+  // fillWizards(wizards);
+  // var wizardsLoader = document.createElement('script');
+  // wizardsLoader.src = 'https://js.dump.academy/code-and-magick/data?callback=window.setup.fillWizards';
+  // document.body.append(wizardsLoader);
+
+  window.backend.load(WIZARDS_DATA_URL, onWizardsDownloadSuccess, onWizardsDownloadError);
 })();
