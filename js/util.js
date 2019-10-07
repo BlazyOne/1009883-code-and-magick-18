@@ -28,6 +28,12 @@
       }
 
       return count;
+    },
+    createLoadErrorElement: function () {
+      var errorElement = document.createElement('div');
+      errorElement.style = 'position: absolute; left: 0; right: 0; z-index: 100; margin: 0 auto; font-size: 30px; text-align: center; background-color: red;';
+      document.body.insertAdjacentElement('afterbegin', errorElement);
+      return errorElement;
     }
   };
 })();
