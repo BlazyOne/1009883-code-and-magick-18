@@ -10,6 +10,8 @@
   var WIZARDS_DATA_URL = 'https://js.dump.academy/code-and-magick/data';
   var WIZARDS_DOWNLOAD_TYPE = 'GET';
 
+  var wizards = [];
+
   var similarWizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
   var similarListElement = document.querySelector('.setup .setup-similar-list');
 
@@ -39,14 +41,18 @@
 
   var fillWizards = function (wizardsData) {
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < WIZARDS_AMOUNT; i++) {
+    var wizardsNumber = wizardsData.length > WIZARDS_AMOUNT ? WIZARDS_AMOUNT : wizardsData.length;
+    similarListElement.innerHTML = '';
+    for (var i = 0; i < wizardsNumber; i++) {
       fragment.appendChild(renderWizard(wizardsData[i]));
     }
     similarListElement.appendChild(fragment);
   };
 
-  var onWizardsDownloadSuccess = function (wizards) {
-    fillWizards(wizards);
+  var onWizardsDownloadSuccess = function (wizardsData) {
+    wizards = wizardsData;
+    window.setup.wizards = wizards;
+    fillWizards(wizardsData);
     document.querySelector('.setup .setup-similar').classList.remove('hidden');
   };
 
@@ -59,6 +65,7 @@
   window.setup = {
     COAT_COLORS: COAT_COLORS,
     EYES_COLORS: EYES_COLORS,
+    wizards: wizards,
     fillWizards: fillWizards
   };
 

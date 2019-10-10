@@ -24,6 +24,8 @@
     eyesColor: 0,
     fireballColor: 0
   };
+  var coatColor;
+  var eyesColor;
 
   var setupPositionReset = function () {
     setup.style.left = SETUP_START_COORDS.x;
@@ -51,6 +53,42 @@
 
     errorElement.textContent = 'Сохранение персонажа. ' + errorMessage;
   };
+
+  var getRank = function (wizard) {
+    var rank = 0;
+
+    if (wizard.colorCoat === coatColor) {
+      rank += 2;
+    }
+    if (wizard.colorEyes === eyesColor) {
+      rank += 1;
+    }
+
+    return rank;
+  };
+
+  var namesComparator = function (left, right) {
+    if (left > right) {
+      return 1;
+    } else if (left < right) {
+      return -1;
+    } else {
+      return 0;
+    }
+  };
+
+  var updateWizards = function () {
+    window.setup.fillWizards(window.setup.wizards.sort(function (left, right) {
+      var rankDiff = getRank(right) - getRank(left);
+      if (rankDiff === 0) {
+        rankDiff = namesComparator(left.name, right.name);
+      }
+      return rankDiff;
+    }));
+  };
+
+  var debounceUpdateCoat = window.util.debounce(updateWizards);
+  var debounceUpdateEyes = window.util.debounce(updateWizards);
 
   setupOpen.addEventListener('click', function () {
     openSetup();
@@ -86,23 +124,32 @@
 
   setupPlayerCoat.addEventListener('click', function () {
     counter.coatColor = window.util.counterChange(counter.coatColor, window.setup.COAT_COLORS.length);
+    var newColor = window.setup.COAT_COLORS[counter.coatColor];
 
-    setupPlayerCoat.style.fill = window.setup.COAT_COLORS[counter.coatColor];
-    setup.querySelector('input[name="coat-color"]').value = window.setup.COAT_COLORS[counter.coatColor];
+    setupPlayerCoat.style.fill = newColor;
+    setup.querySelector('input[name="coat-color"]').value = newColor;
+
+    coatColor = newColor;
+    debounceUpdateCoat();
   });
 
   setupPlayerEyes.addEventListener('click', function () {
     counter.eyesColor = window.util.counterChange(counter.eyesColor, window.setup.EYES_COLORS.length);
+    var newColor = window.setup.EYES_COLORS[counter.eyesColor];
 
-    setupPlayerEyes.style.fill = window.setup.EYES_COLORS[counter.eyesColor];
-    setup.querySelector('input[name="eyes-color"]').value = window.setup.EYES_COLORS[counter.eyesColor];
+    setupPlayerEyes.style.fill = newColor;
+    setup.querySelector('input[name="eyes-color"]').value = newColor;
+
+    eyesColor = newColor;
+    debounceUpdateEyes();
   });
 
   setupFireballWrap.addEventListener('click', function () {
     counter.fireballColor = window.util.counterChange(counter.fireballColor, FIREBALL_COLORS.length);
+    var newColor = FIREBALL_COLORS[counter.fireballColor];
 
-    setupFireballWrap.style.backgroundColor = FIREBALL_COLORS[counter.fireballColor];
-    setup.querySelector('input[name="fireball-color"]').value = FIREBALL_COLORS[counter.fireballColor];
+    setupFireballWrap.style.backgroundColor = newColor;
+    setup.querySelector('input[name="fireball-color"]').value = newColor;
   });
 
   dialogHandle.addEventListener('mousedown', function (evt) {

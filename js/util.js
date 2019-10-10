@@ -3,6 +3,7 @@
 (function () {
   var ESC_KEYCODE = 27;
   var ENTER_KEYCODE = 13;
+  var DEBOUNCE_INTERVAL = 500;
 
   window.util = {
     ESC_KEYCODE: ESC_KEYCODE,
@@ -34,6 +35,19 @@
       errorElement.style = 'position: absolute; left: 0; right: 0; z-index: 100; margin: 0 auto; font-size: 30px; text-align: center; background-color: red;';
       document.body.insertAdjacentElement('afterbegin', errorElement);
       return errorElement;
+    },
+    debounce: function (cb) {
+      var lastTimeout = null;
+
+      return function () {
+        var parameters = arguments;
+        if (lastTimeout) {
+          clearTimeout(lastTimeout);
+        }
+        lastTimeout = setTimeout(function () {
+          cb.apply(null, parameters);
+        }, DEBOUNCE_INTERVAL);
+      };
     }
   };
 })();
