@@ -8,6 +8,7 @@
   };
   var SAVE_WIZARD_URL = 'https://js.dump.academy/code-and-magick';
   var SAVE_WIZARD_LOAD_TYPE = 'POST';
+  var AVATAR_FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
   var setup = document.querySelector('.setup');
   var setupOpen = document.querySelector('.setup-open');
@@ -18,6 +19,8 @@
   var setupPlayerEyes = setup.querySelector('.setup-wizard .wizard-eyes');
   var setupFireballWrap = setup.querySelector('.setup-fireball-wrap');
   var dialogHandle = setup.querySelector('.upload');
+  var avatarChooser = dialogHandle.querySelector('input[type=file]');
+  var avatarPreview = dialogHandle.querySelector('.setup-user-pic');
 
   var counter = {
     coatColor: 0,
@@ -204,5 +207,24 @@
       closeSetup();
     }, onWizardSaveError, new FormData(wizardForm));
     evt.preventDefault();
+  });
+
+  avatarChooser.addEventListener('change', function () {
+    var file = avatarChooser.files[0];
+    var fileName = file.name.toLowerCase();
+
+    var matches = AVATAR_FILE_TYPES.some(function (it) {
+      return fileName.endsWith(it);
+    });
+
+    if (matches) {
+      var reader = new FileReader();
+
+      reader.addEventListener('load', function () {
+        avatarPreview.src = reader.result;
+      });
+
+      reader.readAsDataURL(file);
+    }
   });
 })();
