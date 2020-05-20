@@ -6,7 +6,7 @@
     x: '50%',
     y: '80px'
   };
-  var SAVE_WIZARD_URL = 'https://js.dump.academy/code-and-magick';
+  var SAVE_WIZARD_URL = 'https://javascript.pages.academy/code-and-magick';
   var SAVE_WIZARD_LOAD_TYPE = 'POST';
   var AVATAR_FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
@@ -173,7 +173,7 @@
         y: moveEvt.clientY - startCoords.y
       };
 
-      if (shift.x !== 0 || shift.y !==0) {
+      if (shift.x !== 0 || shift.y !== 0) {
         dragged = true;
       }
 

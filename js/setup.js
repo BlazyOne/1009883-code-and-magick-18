@@ -7,7 +7,7 @@
   var EYES_COLORS = ['black', 'red', 'blue', 'yellow', 'green'];
   var WIZARDS_AMOUNT = 4;
 
-  var WIZARDS_DATA_URL = 'https://js.dump.academy/code-and-magick/data';
+  var WIZARDS_DATA_URL = 'https://javascript.pages.academy/code-and-magick/data';
   var WIZARDS_DOWNLOAD_TYPE = 'GET';
 
   var wizards = [];
